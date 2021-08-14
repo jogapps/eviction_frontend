@@ -102,11 +102,11 @@
                             >Do I Qualify</a
                           >
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                           <a href="property-selection-form.html"
                             >Property Selection Form</a
                           >
-                        </li>
+                        </li> -->
                         <li></li>
                         <li class="nav-item">
                           <a href="faq's.html">FAQ's</a>
@@ -124,12 +124,12 @@
                       >
                     </li>
                     <li class="nav-item">
-                      <a href="http://user.theevictionoption.com"
+                      <a href="https://user.theevictionoption.com"
                         ><button class="acct_btn">Login</button></a
                       >
                     </li>
                     <li class="nav-item">
-                      <a href="http://user.theevictionoption.com/signup"
+                      <a href="https://user.theevictionoption.com/signup"
                         ><button class="acct_btn">Register</button></a
                       >
                     </li>
@@ -417,9 +417,6 @@
                   <h3>Subscribe</h3>
                   <p>Subscribe to our newsletter for the latest updates</p>
                   <form
-                    action="#"
-                    method="get"
-                    target="_blank"
                     class="newsletter-form"
                   >
                     <input
@@ -427,9 +424,10 @@
                       placeholder="Email address"
                       required="required"
                       type="email"
+                      id="email"
                     />
                     <div class="button">
-                      <button class="sub-btn">
+                      <button class="sub-btn" type="button" id="submit">
                         <i class="fas fa-envelope"></i>
                       </button>
                     </div>
@@ -479,8 +477,8 @@
                <div class="container">
                  <form>
                    <div class="mb-3">
-                     <input type="text" class="form-control mb-3 placeholder="Search">
-                   <button type="submit" class="btn btn-primary">Search</button>
+                     <input type="text" class="form-control mb-3" placeholder="Search">
+                   <button type="button" class="btn btn-primary" id="submit">Search</button>
                  </form>
                </div>
            </div>
@@ -489,9 +487,58 @@
      </div>
    
 
-
-
     <script src="assets/js/bootstarp5.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+            $(document).on('click', '#submit', function () {
+              const baseUrl = "http://127.0.0.1:3001/api"
+                let email = $('#email').val();
+                const mailformat =
+                    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+                if (email.length < 1) {
+                    swal("Error!", "Enter email!", "error");
+                } else if (!email.match(mailformat)) {
+                    swal("Error!", "Enter valid email address!", "error");
+                 } 
+                else {
+                    // ajax request
+                    $.ajax({
+                        url: `${baseUrl}/subscribe`,
+                        method: "POST",
+                        async: true,
+                        crossDomain: true,
+                        dataType: 'JSON',
+                        data: {
+                            email: email,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        complete: function (data) {
+                            
+                        },
+                        success: function (data) {
+                            if (data.status == true) {
+                                swal("Success!",
+                                    "Subscribed Successfully",
+                                    "success");
+                            } else {
+                                swal("Error!", "Error connecting to our server!", "error");
+                            }
+                        },
+                        error: function (e) {
+                          console.log(e)
+                            swal("Error!", "Error connecting to our server!" + e, "error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
   </body>
 </html>
