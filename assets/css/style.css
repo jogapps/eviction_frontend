@@ -2316,4 +2316,6 @@ input.input100 {
               transform: translateY(3px);
       box-shadow: none; }
 
-/*# sourceMappingURL=pricing-plan.css.map */
+      ::placeholder{
+        font-weight: 300;
+      }
